@@ -1,0 +1,35 @@
+def get_user_input():
+    income = float(input("Enter your monthly gross income: "))
+    expenses = float(input("Enter your monthly expenses (excluding rent): "))
+    savings_goal = float(input("Enter your monthly savings goal: "))
+    area = input("Enter the Bay Area city you're interested in (e.g., San Francisco, Oakland, San Jose): ")
+    return income, expenses, savings_goal, area
+
+def calculate_affordability(income, expenses, savings_goal, average_rent):
+    net_income = income - expenses - savings_goal
+    if net_income > average_rent:
+        return True, net_income - average_rent
+    else:
+        return False, average_rent - net_income
+
+def main():
+    # Example average rents for simplicity; these would be dynamically fetched in a real app
+    average_rents = {
+        'San Francisco': 3000,
+        'Oakland': 2000,
+        'San Jose': 2500,
+    }
+    
+    income, expenses, savings_goal, area = get_user_input()
+    
+    if area in average_rents:
+        affordable, difference = calculate_affordability(income, expenses, savings_goal, average_rents[area])
+        if affordable:
+            print(f"You can afford to live in {area}. You'll have ${difference:.2f} left after rent, expenses, and savings.")
+        else:
+            print(f"It might be tough to live in {area} based on your financial goals. You are short by ${difference:.2f} to meet your expenses, savings, and rent.")
+    else:
+        print("Sorry, we don't have data for that area.")
+
+if __name__ == "__main__":
+    main()
